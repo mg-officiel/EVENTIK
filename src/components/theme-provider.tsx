@@ -5,7 +5,7 @@ type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: string
   storageKey?: string
-  attribute?: 'class' | 'data-theme' | 'data-theme'
+  attribute?: 'class' | 'data-theme'
   enableSystem?: boolean
   disableTransitionOnChange?: boolean
 }

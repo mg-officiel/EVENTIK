@@ -1,18 +1,22 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { HomeIcon } from '@heroicons/react/24/solid';
+import { Header} from '@/components/header';
+import AIAssistant from './../components/aiAssistant';
+
 
 
 function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* header section*/}
-      
+      <Header />
+
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl font-poppins">
-            <span className="block">Gérez vos événements</span>
+            <span className="block font-bold">Gérez vos événements</span>
             <span className="block text-indigo-600 dark:text-indigo-400">en toute simplicité</span>
           </h1>
           <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
@@ -36,10 +40,17 @@ function Home() {
         </div>
       </section>
 
+      {/*ai experience */}       
+      <div className="col-span-1">
+         <AIAssistant />
+      </div>
+
+
+
       {/* Features Section */}
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
+          <div className="lg:text-center font-bold">
             <h2 className="text-base text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase">Fonctionnalités</h2>
             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
               Une meilleure façon de gérer vos événements
@@ -92,7 +103,7 @@ function Home() {
       {/* CTA Section */}
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl font-bold">
             <span className="block">Prêt à commencer?</span>
             <span className="block text-indigo-600 dark:text-indigo-400">Créez votre premier événement dès aujourd'hui.</span>
           </h2>
