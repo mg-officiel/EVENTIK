@@ -1,115 +1,83 @@
-import { useState } from "react";
-//import { generateEventInfo } from "../services/aiAgent";
-import { X } from "lucide-react";
+import React, { useState } from 'react';
+import { askAI, Message } from '../services/aiAgent';
+import './AiAssistant.css';
 
-export default function FloatingAIAssistant() {
-  const [open, setOpen] = useState(false);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+const AiAssistant = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleGenerate = async () => {
+  const toggleChat = () => setIsOpen(!isOpen);
+
+  const handleSend = async () => {
     if (!input.trim()) return;
 
-    setLoading(true);
-    setResult(null);
+    const userMessage: Message = { role: 'user', content: input };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setInput('');
+    setIsLoading(true);
 
     try {
-      const data = await generateEventInfo(input);
-      setResult(data);
-    } catch (err) {
-      console.error("Erreur IA:", err);
+      const aiResponse = await askAI('visitorAgent', newMessages);
+      const assistantMessage: Message = { role: 'assistant', content: aiResponse };
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: "Désolé, l'IA a paniqué." }
+      ]);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      {/* Floating button */}
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-black text-white shadow-xl flex items-center justify-center text-lg"
-      >
-        IA
+      {/* Bouton flottant */}
+      <button className="ai-float-btn" onClick={toggleChat}>
+        🤖
       </button>
 
-      {/* Overlay */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
-          onClick={() => setOpen(false)}
-        />
-      )}
+      {/* Fenêtre flottante */}
+      {isOpen && (
+        <div className="ai-chat-box">
+          <div className="chat-header">
+            <h3>Assistant IA</h3>
+            <button className="close-btn" onClick={toggleChat}>×</button>
+          </div>
 
-      {/* Sliding Panel */}
-      <div
-        className={`fixed bottom-0 right-0 w-full sm:w-96 h-[80%] bg-white shadow-2xl p-4 z-50 transform transition-transform duration-300 ${
-          open ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-semibold">Assistant IA</h2>
-          <button onClick={() => setOpen(false)}>
-            <X size={22} />
-          </button>
+          <div className="chat-messages">
+            {messages.map((msg, i) => (
+              <div key={i} className={`message ${msg.role}`}>
+                <div className="message-content">{msg.content}</div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="message assistant">
+                <div className="message-content loading-dots">
+                  <span>.</span><span>.</span><span>.</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="chat-input-container">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Pose ta question..."
+              disabled={isLoading}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            />
+            <button onClick={handleSend} disabled={isLoading}>➤</button>
+          </div>
         </div>
-
-        <p className="text-sm text-gray-600 mb-3">
-          Décris ton événement. Je génère un titre, description et prix suggéré.
-        </p>
-
-        {/* Prompt */}
-        <textarea
-          className="w-full h-24 border rounded p-2 text-sm mb-2 resize-none"
-          placeholder="Ex: concert afro à Douala, 300 places..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-
-        <button
-          onClick={handleGenerate}
-          className="w-full bg-black text-white py-2 rounded text-sm"
-        >
-          Générer
-        </button>
-
-        {/* Loading */}
-        {loading && (
-          <div className="mt-4 animate-pulse text-sm text-gray-500">
-            L’IA réfléchit…
-          </div>
-        )}
-
-        {/* Résultat */}
-        {result && (
-          <div className="mt-4 bg-gray-50 border rounded p-3 space-y-3">
-            <div>
-              <p className="text-xs text-gray-600">Titre</p>
-              <p className="font-medium">{result.title}</p>
-            </div>
-
-            <div>
-              <p className="text-xs text-gray-600">Description</p>
-              <p className="text-sm whitespace-pre-line">
-                {result.description}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs text-gray-600">Prix suggéré</p>
-              <p className="text-sm">{result.suggestedPrice} FCFA</p>
-            </div>
-
-            <button
-              className="w-full bg-blue-600 text-white py-2 rounded text-sm"
-              onClick={() => alert("Appliqué au formulaire")}
-            >
-              Appliquer au formulaire
-            </button>
-          </div>
-        )}
-      </div>
+      )}
     </>
   );
-}
+};
+
+export default AiAssistant;

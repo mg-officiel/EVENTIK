@@ -33,12 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
-          // Extraire la partie payload du token (deuxième partie)
-          const payload = storedToken.split('.')[1];
-          if (!payload) throw new Error('Token invalide');
-          
-          // Décoder le payload
-          const decoded = JSON.parse(atob(payload));
+          const decoded: any = jwtDecode(storedToken);
           
           // Vérifier si le token est expiré
           const currentTime = Math.floor(Date.now() / 1000);

@@ -43,7 +43,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "server": "json-server --watch ../db.json --port 3001",
+    "server": "json-server --watch db.json --port 3001",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\""
   },
   "proxy": "http://localhost:3001",

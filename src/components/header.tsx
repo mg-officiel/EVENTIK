@@ -14,8 +14,8 @@ export function Header() {
             <span className="font-bold">EVENTIK</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link to="/events">Événements</Link>
-            <Link to="/create-event">Créer un événement</Link>
+            <Link to="/allevents">Événements</Link>
+            <Link to="/abonnement">Abonnements</Link>
           </nav>
         </div>
 
@@ -36,7 +36,7 @@ export function Header() {
                 <Link to="/login">Connexion</Link>
             </Button>
             <Button asChild>
-                <Link to="/Register">Inscription</Link>
+                <Link to="/register">Inscription</Link>
             </Button>
           </nav>
         </div>

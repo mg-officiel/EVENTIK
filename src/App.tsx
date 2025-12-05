@@ -12,6 +12,9 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
 import CreateEvent from '@/pages/CreateEvent';
+//import Abonnement from '@/pages/Abonnements';
+import Abonnement from '@/pages/Abonnement'; // <-- import corrigé (nom en PascalCase)
+import AllEvents from '@/pages/AllEvents'; // <-- import corrigé (nom en PascalCase)
 
 // Création du client Query
 const queryClient = new QueryClient({
@@ -54,6 +57,9 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/abonnement" element={<Abonnement />} />
+                <Route path="/allevents" element={<AllEvents />} />
+
                 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
